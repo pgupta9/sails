@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.3/mask.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.8/smart-table.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.8/smart-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.8/smart-table.min.js.map"></script>
+
+<style type="text/css">
+  
+  body{
+    top:60px;
+  }
+
+  #us{
+    position:relative;
+    text-align: right;
+    top:35px;
+  }
+
+  .st-sort-ascent:before {
+    content: '\25B2';
+  }
+
+  .st-sort-descent:before {
+    content: '\25BC';
+  }
+</style>
+
+
+
+
+
+</head>
+
+
+
+<body  ng-app="myapp" ng-controller="myCtrl">
+
+
+
+
+<table  st-table="users"  st-set-filter="myStrictFilter" class="table table-striped table-hover">
+<thead>
+<tr>
+
+<th st-sort="cost">Cost
+        
+
+   
+</th>
+<th st-sort="SDT">SDT
+        
+
+   
+</th>
+<th st-sort="UIC">UIC
+        
+</th>
+<th st-sort="FBN">FBN
+       
+        </th>
+
+  
+
+<th></th>
+<th></th>
+
+
+</tr>
+<tr>
+<th colspan="4">
+        <input st-search placeholder="global search" class="input-sm form-control" type="search"/>
+      </th>
+</tr>
+<tr>
+ <th>
+                <input st-search="cost" placeholder="search for cost"  type="search"/>
+            </th>
+  <th>
+  <input st-search="SDT" placeholder="search for SDT"  type="search"/>
+  </th>
+
+  <th>
+  <input st-search="UIC" placeholder="search for UIC"  type="search"/>
+  </th>
+
+  <th>
+  <input st-search="FBN" placeholder="search for FBN"  type="search"/>
+  </th>
+</tr>
+
+</thead>
+<tbody>
+<tr>
+  
+</tr>
+<tr ng-repeat="user in users">
+<td>{{user.cost}}</td>
+<td> {{user.SDT}} </td>
+
+<td> {{user.UIC}} </td>
+<td> {{user.FBN}}</td>
+
+
+<td><a href="/user/show/{{user.id}}" class="btn btn-sm btn-primary">Show</a></td>
+<td><a href="/user/edit2/{{user.id}}" class="btn btn-sm btn-warning">Edit</a></td>
+
+
+
+
+</tr>
+
+</tbody>
+
+
+</table>
+
+
+<script>
+
+var app=angular.module('myapp',['smart-table']);
+app.controller("myCtrl",function($scope,$filter){
+
+$scope.users = <%- JSON.stringify(users) %>;
+
+$scope.predicates = ['cost', 'SDT', 'UIC', 'FBN'];
+    $scope.selectedPredicate = $scope.predicates[0];
+
+
+});
+
+app.filter('myStrictFilter', function($filter){
+    return function(input, predicate){
+        return $filter('filter')(input, predicate, true);
+    }
+});
+
+
+</script>
+
+
+</body>
+</html>

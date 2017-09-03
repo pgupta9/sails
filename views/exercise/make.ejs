@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.3/mask.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+
+
+
+  <style type="text/css">
+ 
+
+body{
+  top:60px;
+}
+#mov{
+  position: relative;
+  top:20px;
+}
+#mov2{
+  position: relative;
+  top:20px;
+}
+#mov3{
+  position: relative;
+  top:20px;
+}
+#mov4{
+  position: relative;
+  top:20px;
+}
+
+ </style>
+<style>
+
+.dualmultiselect label {
+  margin: 10px;
+}
+
+.dualmultiselect .btn {
+  margin: 10px;
+}
+
+.dualmultiselect .pool {
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 5px;
+  height: 150px;
+  overflow-y: scroll;
+}
+
+.dualmultiselect .pool ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+.dualmultiselect .pool ul li {
+  width: 100%;
+  padding: 4px 8px 4px 4px;
+  border-bottom: 1px dotted #CFCFCF;
+}
+
+.dualmultiselect .pool ul li a:hover {
+  text-decoration: none;
+}
+
+.required:before {
+content:" *"; 
+color: #e32;
+position: relative; 
+font-size: large; 
+ }
+</style>
+
+</head>
+<body ng-app="myApp" >
+<div  ng-controller="myCtrl">
+
+<div class="container-fluid">
+<form name="myform" ng-submit="func2()">
+<div class="page-header">
+<h1>Create an exercise</h1>
+</div>
+<div class="row">
+
+ <div class="col-sm-3">
+     <div class="form-group" ng-class="{'has-error':myform.cmd.$invalid && myform.cmd.$dirty}">
+      <label for="cmd">Command</label>
+      <span class="required"> </span>
+      <input type="text" class="form-control" id="cmd" name="cmd" ng-model="cmd"  required> 
+      <span class="help-block has-error" ng-if="myform.cmd.$dirty"> 
+      <span ng-show="myform.cmd.$error.required">The loaning Command is required.</span>
+      </span>
+    </div>
+     
+     </div>
+
+  <div class="col-sm-3" >
+     <div class="form-group" ng-class="{'has-error':myform.name.$invalid && myform.name.$dirty}">
+      <label for="name">Name </label>
+      <span class="required"> </span>
+      <input type="text" class="form-control" id="name" name="name" ng-model="name" required> 
+      <span class="help-block has-error" ng-if="myform.name.$dirty"> 
+      <span ng-show="myform.name.$error.required">The name is required.</span>
+      </span>
+    </div>
+     
+     </div>
+     
+ <div class="col-sm-3" >
+    <div class="datepickerdemo"  layout="column" ng-cloak>
+        <label> Start Date</label>
+         <md-content style="overflow: hidden;">
+           
+            <md-datepicker 
+               ng-model="sd" 
+               md-placeholder="Enter date"></md-datepicker>
+     
+            </md-content>
+        </div>
+     
+  </div>
+
+
+   <div class="col-sm-3" >
+    <div class="datepickerdemo"  layout="column" ng-cloak>
+        <label> End Date </label>
+         <md-content style="overflow: hidden;">
+           
+            <md-datepicker 
+               ng-model="ed" 
+               md-placeholder="Enter date"></md-datepicker>
+     
+            </md-content>
+        </div>
+     
+  </div> 
+
+</div>
+
+
+
+
+
+
+<hr/>
+<div class="row">
+
+<div class="form-group">
+
+<label><h3>Select the type of equipment for the exercise</h3></label>
+
+
+<select ng-model="nomen_id" ng-options="nomen.id as nomen.lin  + ' - ' + nomen.nomen  for nomen in datap">
+</select>
+
+
+</div>
+
+</div>
+
+
+<div class="row">
+<div class="col-sm-3">
+<button type="button" class="btn btn-primary btn-lg btn-block" ng-click="func()">
+Search
+</button>
+</div>
+</div>
+
+
+
+
+<div id="mov2">
+<div class="row">
+
+</div>
+</div>
+
+<div id="mov3">
+<div class="row">
+
+<dualmultiselect options="demoOptions"> </dualmultiselect>
+</div>
+</div>
+<div id="mov4">
+<div class="row">
+<div class="col-sm-3">
+<input type="submit" value="Save" class="btn btn-primary btn-lg btn-block"/>
+</div>
+
+</div>
+</div>
+</form>
+</div>
+
+
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+  
+/*
+Created by Alex Klibisz, aklibisz@utk.edu
+February 2015
+*/
+
+var a;
+a = angular.module("dualmultiselect", []), a.directive("dualmultiselect", [function() {
+  return {
+    restrict: 'E',
+    scope: {
+      options: '='
+    },
+    controller:['$scope', function($scope) {
+      $scope.transfer = function(from, to, index) {
+        if (index >= 0) {
+          to.push(from[index]);
+          from.splice(index, 1);
+        } else {
+          for (var i = 0; i < from.length; i++) {
+            to.push(from[i]);
+          }
+          from.length = 0;
+        }
+      };
+    }],
+    template: '<div class="dualmultiselect"> <div class="row"> <div class="col-lg-12 col-md-12 col-sm-12"> <h4>{{options.title}}<small>&nbsp;{{options.helpMessage}}</small> </h4> <input class="form-control" placeholder="{{options.filterPlaceHolder}}" ng-model="searchTerm"> </div></div><div class="row"> <div class="col-lg-6 col-md-6 col-sm-6"> <label>{{options.labelAll}}</label> <button type="button" class="btn btn-default btn-xs" ng-click="transfer(options.items, options.selectedItems, -1)"> Select All </button> <div class="pool"> <ul> <li ng-repeat="item in options.items | filter: searchTerm | orderBy: options.orderProperty"> <a href="" ng-click="transfer(options.items, options.selectedItems, options.items.indexOf(item))">{{item.name}}&nbsp;&rArr; </a> </li></ul> </div></div><div class="col-lg-6 col-md-6 col-sm-6"> <label>{{options.labelSelected}}</label> <button type="button" class="btn btn-default btn-xs" ng-click="transfer(options.selectedItems, options.items, -1)"> Deselect All </button> <div class="pool"> <ul> <li ng-repeat="item in options.selectedItems | orderBy: options.orderProperty"> <a href="" ng-click="transfer(options.selectedItems, options.items, options.selectedItems.indexOf(item))"> &lArr;&nbsp;{{item.name}}</a> </li></ul> </div></div></div></div>'
+  };
+}]);
+
+
+
+
+
+
+var app = angular.module("myApp", ['ngMaterial','ngMessages','ui.mask','dualmultiselect']);
+app.controller("myCtrl", ['$scope','$http',function($scope, $http) {
+    
+    $scope.name="";
+    $scope.sd="";
+    $scope.ed="";
+   $scope.cmd="";
+
+   
+
+    
+
+    
+    $scope.exercises = <%- JSON.stringify(exercises) %>;
+
+    
+
+    $scope.exer_id=$scope.exercises[$scope.exercises.length-1].id;
+
+
+
+
+     $http.get("/primelin")
+    .then(function(response) {
+       
+        $scope.datap= response.data;
+        
+        
+
+    });
+
+    $scope.func=function(){
+      console.log($scope.nomen_id);
+    $http.post('/wf',{
+
+      nomenu_id:$scope.nomen_id
+
+
+
+    })
+    .then(function(response) {
+         console.log(response.data);
+       $scope.datau=response.data;
+        
+        if(response.data.users.length==0){
+          alert("no equipments available, please select some other equipment");
+        }
+        
+        $scope.itemse=response.data.users;
+
+
+        console.log($scope.itemse);
+
+        var i;
+      
+        for(i=0;i<$scope.itemse.length;i++){
+          
+          $scope.demoOptions.items.push({name:$scope.itemse[i].FBN});
+        }
+
+        console.log($scope.demoOptions.items);
+       
+
+    });
+    
+   };
+
+
+    
+
+
+   
+   
+    
+
+
+
+
+
+  $scope.func2=function(){
+  $scope.patt=$scope.name.trim();
+  $scope.patt2=$scope.cmd.trim();
+    if($scope.patt=='' || $scope.patt2==''){
+      alert("Name and/or Command cannot be blank");
+      window.location="/exercise/make";
+    }
+
+else{
+
+ $http.post('/esignup',{
+
+         name:$scope.name,
+         start_date:$scope.sd,
+         end_date:$scope.ed,
+         loan_command:$scope.cmd
+            
+    });
+    
+
+    
+
+  if($scope.demoOptions.selectedItems.length==0){
+    window.location='/exercise/submitted';
+
+  }
+    
+
+  else{
+
+    
+
+    $http.post('/exequip/creates',{
+     exid:$scope.exer_id+1,
+     arr:$scope.demoOptions.selectedItems
+
+    }).then(function onSuccess(){
+            
+            window.location='/exercise/submitted';
+
+        });
+  
+  
+  
+  }
+  
+  }
+  
+  
+ // alert("done");
+  
+
+  };
+
+
+  $scope.demoOptions = {
+  title: 'Bumper Number of available equipments',
+  filterPlaceHolder: 'Start typing to filter the lists below.',
+  labelAll: 'All Items',
+  labelSelected: 'Selected Items',
+  helpMessage: ' Click items to transfer them between fields.',
+  /* angular will use this to filter your lists */
+  orderProperty: 'FBN',
+  /* this contains the initial list of all items (i.e. the left side) */
+  items: [],
+  /* this list should be initialized as empty or with any pre-selected items */
+  selectedItems: [] 
+};
+
+
+    
+    
+}]);
+
+
+       
+</script>
+
+
+
+
+</body>
+</html>

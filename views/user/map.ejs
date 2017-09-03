@@ -1,0 +1,341 @@
+<html ng-app='plunker'>
+<head>
+<title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.5.0/dist/svg-pan-zoom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.3/mask.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<style>
+body{
+top:40px;
+}
+
+#enter{
+	position: relative;
+	left:850px;
+	top:200px;
+}
+
+
+#eqmap{
+	border:1px solid black;
+}
+
+#mov{
+	position: relative;
+	left:25px;
+}
+
+table{
+	
+}
+
+table .absorbing-column{
+	width: 70%;
+}
+.container {
+        width: 500px;
+        clear: both;
+
+    }
+    .container input {
+        width: 50%;
+        clear: both;
+    }
+form{
+	position: absolute;
+	top:475px;
+}
+p{
+	font-size: 90%;
+}
+#e{
+position: relative;
+left:20px;
+}
+</style>
+<body ng-controller='myCtrl'>
+<div class="container-fluid">
+<div class="page-header">
+<h1>EQUIPMENT LOCATION MAP</h1>
+</div>
+
+<div class="row">
+<div class="col-sm-3">
+
+<table class="table" border="1">
+<tr style="background-color:#eef995;">
+<td>Service complete</td>
+</tr>
+<tr style="background-color:red;">
+<td>Service Due</td>
+</tr>
+<tr style="background-color:#eef995;">
+<td>NMC</td>
+</tr>
+<tr style="background-color:#eef995;">
+<td>Dispatched</td>
+</tr>
+<tr style="background-color:#eef995;">
+<td>In shop</td>
+</tr>
+<t style="background-color:#eef995;"r>
+<td>IMMA/Open WO</td>
+</tr>
+<tr style="background-color:#eef995;">
+<td>No Status</td>
+</tr>
+<tr style="background-color:#eef995;">
+<td>Waiting on parts</td>
+</tr>
+<tr style="background-color:#eef995;">
+<td>FMC</td>
+</tr>
+</table>
+
+</div>
+<div class="col-sm-8">
+<div id="grid"></div>
+
+</div>
+
+
+
+<form>
+<div class="row" id="e">
+<div class=	"col-sm-6">
+<p><i><strong>Enter Bumper Number of equipment to be added to the Map :</strong></i> </p>
+</div>
+</div>
+<div class="col-sm-8" >
+ <label>Bumper No. :</label>
+<input type="text" ng-model='selected.text' ng-change='func()'  /> 
+</div>
+
+<div class="col-sm-8">
+<label>Choose the status : </label>
+
+<select ng-model='selected.fill' ng-change='func2(selected.fill)' ng-options='status.color as status.name for status in datast' >
+</select> 
+</div>
+
+
+<div class="col-sm-6">
+<input type="submit" value="Create the Map!" ng-click="func3()" class="btn btn-sm btn-success"/>
+</div>
+
+
+</form>
+
+
+
+
+</div>
+</div>
+<script  type="text/javascript">
+	var app = angular.module('plunker', [ ]);
+
+  
+  app.controller("myCtrl", ['$scope','$http',function($scope, $http) {
+$scope.users= <%- JSON.stringify(users) %>;
+
+
+$http.get("/fullmap?sort=id%20Desc&limit=1")
+    .then(function(response) {
+        console.log(response.data);
+        $scope.dmap= JSON.parse(response.data[0].txt);
+        var grid = d3.select("#grid")
+	.append("svg")
+	.attr("width","800px")
+	.attr("height","500px")
+	.attr("id","eqmap")
+	;
+	
+var row = grid.selectAll(".row")
+	.data($scope.dmap)
+	.enter().append("g")
+	.attr("class", "row");
+
+	row.append('text').attr("x", "25")
+	.attr("y", function(d) { return d.y + 20; })
+	.attr("text-anchor","middle")
+	.text(function(d){return d.text;})
+
+	;
+
+	
+var group = row.selectAll(".square")
+	.data(function(d) { return d.data; })
+	.enter().append("g");
+
+group.append("rect")
+	.attr("class","square")
+	.attr("x", function(d) { return d.x; })
+	.attr("y", function(d) { return d.y; })
+	.attr("width", function(d) { return d.width; })
+	.attr("height", function(d) { return d.height; })
+	.style("fill", function(d) { return d.fill; })
+	.style("stroke", "#222")
+	.on('click', function(d) {
+		$scope.selected=d;
+		$scope.$apply();
+		
+       d3.selectAll('.square').style("stroke", function(d){
+       	if(d===$scope.selected){
+       		return '#f00';
+       	}
+       	return '#222';
+       }).style("stroke-width", function(d){
+       	if(d===$scope.selected){
+       		return '2';
+       	}
+       	return '1';
+       });
+      // d3.select(this).style("stroke","#f00")
+       
+    });
+
+group.append("text")
+	.attr("x", function(d) { return d.x +15; })
+	.attr("y", function(d) { return d.y + 20; })
+	.attr("text-anchor","middle")
+	.text(function(d){return d.text;})
+
+	;
+
+	window.zoomTiger = svgPanZoom('#eqmap', {
+          zoomEnabled: true,
+          controlIconsEnabled: true,
+          fit: true,
+          center: true,
+          // viewportSelector: document.getElementById('demo-tiger').querySelector('#g4') // this option will make library to misbehave. Viewport should have no transform attribute
+        });
+
+$scope.func=function(){
+d3.select("#grid").transition().selectAll(".row").transition().selectAll('text').text(function(d){return d.text;});
+}
+
+$scope.func2=function(item){
+d3.select("#grid").transition().selectAll(".row").transition().selectAll('.square').style("fill", function(d){return d.fill;});
+}
+$scope.func3=function(){
+        $http.post('/signmap', {
+            
+           txt :JSON.stringify($scope.dmap)
+
+
+        })
+        .then(function onSuccess(){
+            window.location='/user/submitted';
+
+        });
+    };
+        
+
+    });
+    
+$http.get("/status")
+    .then(function(response) {
+        
+        $scope.datast= response.data;
+
+
+    });
+
+$scope.selected={};
+	function gridData() {
+	var data = new Array();
+	var xpos = 51; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
+	var ypos = 1;
+	var width = 30;
+	var height = 30;
+	var click = 0;
+	
+	// iterate for rows	
+	for (var row = 0; row < 40; row++) {
+		var obj={data:new Array(),y:ypos};
+		switch(row){
+			case 0: obj.text='WB';
+					break;
+			case 3: obj.text='MT';
+					break;
+			case 7: obj.text='LM';
+					break;
+			case 15: obj.text='HV';
+					break;
+			case 19: obj.text='HV';
+					break;
+			case 23: obj.text='HV';
+					break;
+			case 27: obj.text='HV';
+					break;
+			case 32: obj.text='G3';
+					break;
+			case 36: obj.text='G5';
+					break;
+			case 39: obj.text='G2';
+					break;
+			default: obj.text='';
+					 break;
+
+
+
+
+		}
+
+		data.push( obj );
+		
+		// iterate for cells/columns inside rows
+		for (var column = 0; column < 61; column++) {
+			data[row].data.push({
+				x: xpos,
+				y: ypos,
+				width: width,
+				height: height,
+				fill: '#fff',
+				text:''
+
+			})
+			// increment the x position. I.e. move it over by 50 (width variable)
+			xpos += width+2;
+		}
+		// reset the x position after a row is complete
+		xpos = 51;
+		// increment the y position for the next row. Move it down 50 (height variable)
+		ypos += height+2;	
+	}
+	return data;
+}
+
+$scope.gridData =JSON.stringify(gridData());	
+
+// I like to log the data to the console for quick debugging
+//console.log(gridData);
+
+
+//${'#grid'}.html('');
+//d3.select("#grid").remove();
+
+
+}]);
+</script>
+</body>
+
+
+
+
+</html>

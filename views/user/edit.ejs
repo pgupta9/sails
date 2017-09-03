@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.3/mask.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+  <style type="text/css">
+ 
+
+#HQ{
+position:relative;
+top:25px;
+}
+
+body{
+background-color:lavender;
+top:20px; 
+
+}
+
+
+
+
+.row [class*="col-"]{
+  margin-bottom: -99999px;
+  padding-bottom: 99999px;
+}
+
+.row{
+  overflow: hidden; 
+}
+
+::-webkit-input-placeholder {
+    font-style:italic;
+}
+
+.required:before {
+content:" *"; 
+color: #e32;
+position: relative; 
+font-size: large; 
+ }
+ 
+
+
+
+ </style>
+</head>
+<body ng-app="myApp" style="background-color:lavender;">
+<div  ng-controller="myCtrl">
+<form name="myform" action="/user/update/<%= user.id %>" method="POST">
+<div class="container-fluid">
+  <div class="page-header" id="hd">
+    <h1>Add an equipment</h1>      
+  </div>
+
+  <div class="row" >
+    <div class="col-sm-2" style="background-color:lavender;">
+    <div class="checkbox">
+    <label><input  type="checkbox"  name="rolling" value="true" ng-model="rolling" >Rolling</label>
+    <input type="hidden"  name="rolling" value="false" ng-disabled="rolling">
+    </div> 
+    </div>
+    <div class="col-sm-2" style="background-color:lavender;">
+    <div class="checkbox">
+    <label><input type="checkbox" name="AFI" value="true" ng-model="AFI" >Available for Issue</label>
+    <input type="hidden"  name="AFI" value="false" ng-disabled="AFI">
+    </div>
+    </div>
+    <div class="col-sm-2" style="background-color:lavender;">
+    <div class="checkbox">
+    <label><input type="checkbox" name="GAS" value="true" ng-model="GAS">GA-synced</label>
+    <input type="hidden"  name="GAS" value="false" ng-disabled="GAS">
+    </div>
+    </div>
+    <div class="col-sm-2" style="background-color:lavender;">
+    <div class="checkbox">
+    <label><input type="checkbox" name="GARMY" value="true" ng-model="GARMY">G-Army</label>
+    <input type="hidden"  name="GARMY" value="false" ng-disabled="GARMY">
+    </div>
+    </div>
+    <div class="col-sm-2" style="background-color:lavender;" id="ns" >
+    <div class="checkbox">
+    <label><input type="checkbox" name="NTS" value="true" ng-model="NTS">Noted Shortages</label>
+    <input type="hidden"  name="NTS" value="false" ng-disabled="NTS">
+    </div>
+    </div>
+    <div class="col-sm-2" style="background-color:lavender;" id="cc">
+    <div class="checkbox">
+    <label><input type="checkbox" name="CC" value="true" ng-model="CC">Coolant Check</label>
+    <input type="hidden"  name="CC" value="false" ng-disabled="CC">
+    </div> 
+    </div>
+
+    </div>
+    <hr>
+    <div class="row">
+     <div class="col-sm-3" style="background-color:lavender;">
+     <div class="form-group" >
+      <label for="cost">Cost ($)</label>
+      <span class="required"> </span>
+      <input type="text" class="form-control" id="cost" name="cost" value="<%= user.cost %>"  required> 
+      
+    </div>
+     
+     </div> 
+     
+     
+     
+     
+     <div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="QTY">Quantity</label>
+      <span class="required"> </span>
+      
+      <input type="text" class="form-control" id="QTY" name="QTY" value="<%= user.QTY %>" required>
+ 
+    </div>
+
+</div>
+     <div class="col-sm-6" style="background-color:lavender;" id="Nomen">
+    <div class="form-group" >
+     <label for="Nomen">Lin and Nomenclature</label>
+    <select  ng-model="nomen_id" name="nomen_id"  ng-options="nomen.id as nomen.lin  + ' - ' + nomen.nomen  for nomen in datap">
+</select>
+
+  </div>
+</div>
+
+     </div>
+     <div class="row">
+      <div class="col-sm-3" style="background-color:lavender;">
+     <div class="form-group" >
+      <label for="EIC">Equipment Identification Code</label>
+      <span class="required"> </span>
+      <input type="text" class="form-control" id="EIC" name="EIC"  value="<%= user.EIC %>"  required> 
+      
+      
+    </div>
+     
+     </div> 
+     
+      <div class="col-sm-3" style="background-color:lavender;">
+     <div class="form-group" >
+      <label for="NSN">NSN</label>
+      <span class="required"> </span>
+      <input type="text" class="form-control" id="NSN" name="NSN"  value="<%= user.NSN %>" required> 
+      
+    </div>
+     
+     </div> 
+     <div class="col-sm-3" style="background-color:lavender;">
+   <div class="form-group" >
+      <label for="SUBLIN">Sublin</label>
+      <input type="text" class="form-control" id="SUBLIN" name="sublin" value="<%= user.sublin %>"  > 
+    
+    </div>
+   
+   </div> 
+   <div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="HRS">HRS@Reception</label>
+      <input type="text" class="form-control" id="HRS" name="HRS" value="<%= user.HRS %>"> 
+    </div>
+     
+     </div> 
+      
+     </div>
+     
+     
+
+<div class="row">
+<div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="BumpNo">FMCDY Bumper Number</label>
+      <span class="required"> </span>
+      <input type="text" class="form-control" id="BumpNo" value="<%= user.FBN %>" name="FBN" required> 
+       
+    </div>
+     
+     </div> 
+
+     <div class="col-sm-3" style="background-color:lavender;">
+     <div class="form-group" >
+      <label for="Model">Model</label>
+      <span class="required"> </span>
+      <input type="text" class="form-control" id="Model" name="Model" value="<%= user.Model %>" required> 
+     
+    </div>
+     
+     </div> 
+     
+<div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="MI">MI@Reception</label>
+      <input type="text" class="form-control" id="MI" name="MI" value="<%= user.MI %>"> 
+    </div>
+     
+     </div>      
+     
+<div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="CoolN">Coolant Note</label>
+      <input type="text" class="form-control" id="CN" name="CN" value="<%= user.CN %>"> 
+    </div>
+     
+     </div> 
+
+     </div>
+     <div class="row">
+     
+     <div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group"  >
+      <label for="UTU">SDT/Unit to Unit</label>
+      <span class="required" > </span>
+      <input type="text" class="form-control" id="SDT" name="SDT" value="<%= user.SDT %>" required> 
+      
+    </div>
+
+</div>
+<div class="col-sm-3" style="background-color:lavender;" id="HQ">
+     <div class="form-group" >
+     <label for="HQ">Headquarters</label>
+    <select ng-model="command_id" ng-options="hq.id as hq.HQ for hq in data">
+</select>
+  </div>
+</div>
+
+     
+     
+     
+     <div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="VEHREG">Vehicle Registration Number</label>
+      <input type="text" class="form-control" id="VEHR" name="VEHR" value="<%= user.VEHR %>" > 
+    </div>
+     
+  </div>
+  
+  <div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="misinfo">Mismatch Info</label>
+      <input type="text" class="form-control" id="Minfo" name="Minfo" value="<%= user.Minfo %>" > 
+    </div>
+
+</div>
+ 
+  
+     
+  
+</div>
+<div class="row">
+<div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="UIC">Unit Identification Code</label>
+       <span class="required"> </span>
+      <input type="text" class="form-control" id="UIC" name="UIC" value="<%= user.UIC %>"  required> 
+      
+    </div>
+
+</div>
+
+
+
+<div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="Unit">Unit</label>
+      <span class="required"> </span>
+      <input type="text" class="form-control" id="Unit" name="Unit" value="<%= user.Unit %>" required> 
+      
+    </div>
+
+</div>
+<div class=" col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="NewGen">New Gen #</label>
+      <input type="text" class="form-control" id="Newgen" name="Newgen" value="<%= user.Newgen %>"> 
+    </div>
+
+</div>
+
+<div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="UnitBump">Unit Bumper #</label>
+      <input type="text" class="form-control" id="Unitbump" name="Unitbump" value="<%= user.Unitbump %>"> 
+    </div>
+
+</div>
+
+
+ 
+
+</div>
+<div class="row">
+
+ <div class="col-sm-3" style="background-color:lavender;" >
+    <div class="datepickerdemo"  layout="column" ng-cloak>
+        <label> Date Received </label>
+         <md-content style="overflow: hidden;">
+           
+            <md-datepicker 
+               ng-model="DREC" 
+               md-placeholder="Enter date"></md-datepicker>
+     
+            </md-content>
+        </div>
+     
+  </div>
+<div class="col-sm-3" style="background-color:lavender;" >
+      <div class="datepickerdemo"  layout="column" ng-cloak id="MD" >
+      <label> Manufacturing Date </label>
+         <md-content style="overflow: hidden;" >
+            
+            <md-datepicker 
+               ng-model="MFG" 
+
+               md-placeholder="Enter date"></md-datepicker>
+     
+            </md-content>
+        </div>
+     </div>
+
+
+<div class="col-sm-3" style="background-color:lavender;" >
+     <div class="form-group" >
+      <label for="SN">Serial Number</label>
+      <input type="text" class="form-control" id="SN" name="SN" value="<%= user.SN %>"> 
+    </div>
+    </div>
+
+
+<div class="col-sm-3" style="background-color:lavender;" >
+<div class="form-group">
+  <label for="remarks">Remarks</label>
+  <textarea class="form-control" rows="2" id="Remarks" name="Remarks"  ><%= user.Remarks %></textarea>
+</div>
+</div>
+
+</div>
+<div class="row">
+
+
+<div class="col-sm-3" style="background-color:lavender;" >
+     <div class="datepickerdemo"  layout="column" ng-cloak>
+        <label>HR FMCDY to Unit </label>
+         <md-content  style="overflow: hidden;">
+            
+            <md-datepicker 
+               ng-model="HRFU" 
+               md-placeholder="Enter date" ng-required="false"></md-datepicker>
+     
+            </md-content>
+        </div>
+
+</div>
+
+<div class=" col-sm-3" style="background-color:lavender;" >
+    <div class="datepickerdemo"  layout="column" ng-cloak>
+            <label>Date Added</label>
+         <md-content style="overflow: hidden;">
+            <md-datepicker 
+               ng-model="DA" 
+               md-placeholder="Enter date"></md-datepicker>
+     
+            </md-content>
+        </div>
+
+</div>
+
+<div class="col-sm-6" style="background-color:lavender;" id="but">
+<button  type="submit" class="btn btn-primary btn-lg btn-block">
+Submit!
+</button>
+</div>
+
+
+
+
+</div>
+
+
+
+
+</div>
+</form>
+</div>
+<script>
+
+var app = angular.module("myApp", ['ngMaterial','ngMessages','ui.mask']);
+app.controller("myCtrl", ['$scope','$http',function($scope, $http) {
+    
+    $http.get("/command")
+    .then(function(response) {
+        
+        $scope.data= response.data;
+
+
+    });
+    
+    $scope.HQS="";  
+    $http.get("/primelin")
+    .then(function(response) {
+        
+        $scope.datap= response.data;
+        
+        
+
+    });
+    
+    
+
+    
+    $scope.data= <%- JSON.stringify(user) %>;
+/*
+    $scope.subsignup=function(){
+        $http
+          .post('/user/update/<%= user.id %>', $scope.data)
+          .then(function onSuccess(){
+            window.location='/user/show/<%= user.id %>';
+          });
+        };
+        */
+      $scope.rolling=$scope.data.rolling;
+      $scope.NTS=$scope.data.NTS;
+      $scope.CC=$scope.data.CC;
+      $scope.AFI=$scope.data.AFI;
+      $scope.GAS=$scope.data.GAS;
+      $scope.GARMY=$scope.data.GARMY;
+
+      $scope.nomen_id=$scope.data.nomen_id;
+
+      
+
+    $scope.SDT="" ;
+    $scope.Unit="" ;
+    $scope.UIC="" ;
+    $scope.QTY="" ;
+    $scope.remarks="" ;
+    $scope.Minfo="" ;
+    $scope.newgen="" ;
+    $scope.unitbump="" ;
+    $scope.maskNSN="9999-99-999-9999";
+    $scope.maskLIN="A99999";
+    $scope.maskEIC="***";
+    $scope.maskUIC="A*****";
+    $scope.myDate = new Date();
+            $scope.minDate = new Date(
+               $scope.myDate.getFullYear(),
+               $scope.myDate.getMonth() - 2,
+               $scope.myDate.getDate());
+            $scope.maxDate = new Date(
+               $scope.myDate.getFullYear(),
+               $scope.myDate.getMonth() + 2,
+               $scope.myDate.getDate());
+            $scope.onlyWeekendsPredicate = function(date) {
+               var day = date.getDay();
+               return day === 0 || day === 6;
+            }
+
+   
+    
+}]);
+
+
+       
+</script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='plunker' >
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+       
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.3/mask.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" />
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.0-rc2/angular-material.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-calendar/1.0.0/calendar.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/gcal.min.js"></script>
+
+  <style type="text/css">
+ @import url('https://fonts.googleapis.com/css?family=Lato:400,500,600,700,400italic,700italic&subset=latin');
+@import url('https://fonts.googleapis.com/css?family=Ropa+Sans');
+
+
+body{
+background-color:lavender;
+top:60px; 
+box-sizing: border-box;
+  padding: .3em;
+
+}
+
+
+
+.pull-left{
+  float: left;
+}
+
+.pull-right{
+  float: right;
+}
+
+
+ </style>
+</head>
+<body  style="background-color:lavender;">
+<div ng-controller="myCtrl">
+
+ <div>{{alertMessage}}</div>
+
+  <div class="pull-left">
+    <button ng-click="changeView('month')" class="btn btn-sm btn-success">month</button>
+    <button ng-click="changeView('basicWeek')" class="btn btn-sm btn-success">week</button>
+    <md-button ng-click="changeView('basicDay')" class="btn btn-sm btn-success">day</md-button>
+  </div>    
+
+  <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="myCalendar">
+</div>
+</div>
+<script>
+var app = angular.module('plunker', [ 'ui.calendar']);
+
+  
+  app.controller("myCtrl", ['$scope','$http',function($scope, $http) {
+
+    Date.prototype.addDays = function(days) {
+  var dat = new Date(this.valueOf());
+  dat.setDate(dat.getDate() + days);
+  return dat;
+}
+
+    $scope.eventSources=[];
+
+   $scope.exercises= <%- JSON.stringify(exercises) %>;
+   
+ $calendar = $('[ui-calendar]');
+    
+    var date = new Date(),
+      d = date.getDate(),
+      m = date.getMonth(),
+      y = date.getFullYear();
+
+    $scope.changeView = function(view){      
+       $calendar.fullCalendar('changeView',view);
+    };
+    
+    /* config object */
+    $scope.uiConfig = {
+      calendar: {
+        lang: 'da',
+        height: '100%',
+        editable: true,
+        header: {
+          //left: 'month basicWeek basicDay',
+          //center: 'title',
+          right: 'today prev,next'
+        },
+        eventClick: function(date, jsEvent, view) {
+          $scope.alertMessage = (date.title + ' was clicked ');
+        },
+        dayClick: $scope.alertEventOnClick,
+        eventDrop: $scope.alertOnDrop,
+        eventResize: $scope.alertOnResize,
+        eventRender: $scope.eventRender,
+        displayEventTime: false
+      }
+    };
+
+    $scope.events=[];
+    for(i=0;i<$scope.exercises.length;i++){
+      
+      $scope.events.push({
+        title:$scope.exercises[i].name,
+        start:$scope.exercises[i].start_date,
+        end:$scope.exercises[i].end_date.addDays(1) ,
+        url:'/exercise/show/' + $scope.exercises[i].id
+      });
+
+    }
+
+    var i;
+
+
+
+    $scope.eventSources = [$scope.events];
+
+}]);
+       
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.3/mask.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+  <style type="text/css">
+ 
+
+#HQ{
+position:relative;
+top:25px;
+}
+
+body{
+background-color:lavender;
+top:100px; 
+
+}
+
+
+
+
+.row [class*="col-"]{
+  margin-bottom: -99999px;
+  padding-bottom: 99999px;
+}
+
+.row{
+  overflow: hidden; 
+}
+
+::-webkit-input-placeholder {
+    font-style:italic;
+}
+
+.required:before {
+content:" *"; 
+color: #e32;
+position: relative; 
+font-size: large; 
+ }
+ 
+
+
+
+ </style>
+</head>
+<body ng-app="myApp" style="background-color:lavender;">
+<div  ng-controller="myCtrl">
+
+
+<h1> {{users.cost}} </h1>
+
+
+</div>
+<script>
+
+var app = angular.module("myApp", ['ngMaterial','ngMessages','ui.mask']);
+app.controller("myCtrl", ['$scope','$http',function($scope, $http) {
+    
+     $scope.users= <%- JSON.stringify(users) %>;
+     console.log($scope.users);
+}]);
+
+
+       
+</script>
+</body>
+</html>
